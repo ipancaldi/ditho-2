@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interval Logo Animation</title>
+  <style>
+    :root {
+      --bg: #000000;
+      --fg: #f3f3f3;
+      --muted: rgba(243, 243, 243, 0.32);
+      --duration: 3s;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out-quad: cubic-bezier(0.45, 0, 0.55, 1);
+      --font: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+    }
+
+    .logo {
+      width: min(76vw, 760px);
+      height: auto;
+      overflow: visible;
+    }
+
+    .mark {
+      fill: var(--fg);
+      transform-box: view-box;
+      shape-rendering: geometricPrecision;
+    }
+
+    .letter-path {
+      fill: var(--fg);
+      shape-rendering: geometricPrecision;
+    }
+
+    .bracket-base {
+      transform-box: view-box;
+      transform-origin: 50% 92%;
+      animation: bracketBase var(--duration) var(--ease-in-out-quad) both;
+    }
+
+    .bracket-left {
+      animation: bracketLeft var(--duration) var(--ease-in-out-quad) both;
+    }
+
+    .bracket-right {
+      animation: bracketRight var(--duration) var(--ease-in-out-quad) both;
+    }
+
+    .logo-i,
+    .logo-l {
+      transform-box: view-box;
+      opacity: 0;
+      animation: letterBounce var(--duration) var(--ease) both;
+    }
+
+    .logo-i {
+      transform-origin: 2.768px 26.182px;
+    }
+
+    .logo-l {
+      transform-origin: 123.679px 26.182px;
+    }
+
+    .word {
+      animation: textFade var(--duration) linear both;
+    }
+
+    .controls {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      display: flex;
+      gap: 8px;
+    }
+
+    button {
+      min-height: 36px;
+      border: 1px solid rgba(243, 243, 243, 0.22);
+      border-radius: 8px;
+      background: rgba(243, 243, 243, 0.08);
+      color: var(--fg);
+      padding: 8px 12px;
+      font: 650 13px/1 var(--font);
+      cursor: pointer;
+    }
+
+    button:hover {
+      border-color: rgba(243, 243, 243, 0.54);
+      background: rgba(243, 243, 243, 0.14);
+    }
+
+    .timeline {
+      position: fixed;
+      left: 18px;
+      bottom: 24px;
+      width: min(360px, calc(100vw - 36px));
+      height: 2px;
+      background: rgba(243, 243, 243, 0.16);
+    }
+
+    .timeline::before {
+      content: "";
+      display: block;
+      height: 100%;
+      width: 100%;
+      background: var(--fg);
+      transform-origin: left center;
+      animation: progress var(--duration) linear both;
+    }
+
+    @keyframes bracketBase {
+      0%,
+      16.6667% {
+        transform: scaleX(0);
+      }
+      27.5% {
+        transform: scaleX(1.022);
+      }
+      31.25% {
+        transform: scaleX(0.997);
+      }
+      33.3333%,
+      100% {
+        transform: scaleX(1);
+      }
+    }
+
+    @keyframes bracketLeft {
+      0%,
+      16.6667% {
+        transform: translateX(47.606%);
+      }
+      27.5% {
+        transform: translateX(-1.05%);
+      }
+      31.25% {
+        transform: translateX(0.14%);
+      }
+      33.3333%,
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes bracketRight {
+      0%,
+      16.6667% {
+        transform: translateX(-47.606%);
+      }
+      27.5% {
+        transform: translateX(1.05%);
+      }
+      31.25% {
+        transform: translateX(-0.14%);
+      }
+      33.3333%,
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes letterBounce {
+      0%,
+      33.3333% {
+        opacity: 0;
+        transform: translateY(61.8%);
+      }
+      33.4% {
+        opacity: 1;
+        transform: translateY(61.8%);
+      }
+      47% {
+        opacity: 1;
+        transform: translateY(-6%);
+      }
+      54% {
+        opacity: 1;
+        transform: translateY(2.5%);
+      }
+      61% {
+        opacity: 1;
+        transform: translateY(-1%);
+      }
+      66.6667%,
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes textFade {
+      0%,
+      66.6667% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes progress {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+
+    .paused * {
+      animation-play-state: paused !important;
+    }
+
+    @media (max-width: 720px) {
+      .logo {
+        width: 88vw;
+      }
+
+      .controls {
+        right: 12px;
+        bottom: 12px;
+      }
+
+      .timeline {
+        left: 12px;
+        bottom: 18px;
+        width: calc(100vw - 136px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" id="stage" aria-label="Interval logo storyboard animation">
+    <svg class="logo" viewBox="0 0 127 49" role="img" aria-labelledby="title description">
+      <title id="title">Interval logo animation</title>
+      <desc id="description">The exact Interval logo proportions animate from a centered bracket, then the I and l bounce up from the bracket edges, then nterva fades in.</desc>
+
+      <g class="bracket" fill="white">
+        <rect class="mark bracket-base" x="0.0878906" y="42.8164" width="126.3381094" height="5.5127" />
+        <rect class="mark bracket-left" x="0.0878906" y="30.4121" width="5.4277294" height="17.917" />
+        <rect class="mark bracket-right" x="121.015" y="30.3105" width="5.411" height="18.0186" />
+      </g>
+
+      <g class="edge-letters" fill="white">
+        <rect class="mark logo-i" x="0" y="0" width="5.53613" height="26.1816" />
+        <rect class="mark logo-l" x="120.956" y="0" width="5.446" height="26.1816" />
+      </g>
+
+      <g class="word">
+        <path class="letter-path" d="M53.3955 6.29004C54.6907 6.29009 55.8964 6.49851 57.0127 6.91602C58.1376 7.32508 59.1179 7.94292 59.9531 8.76953C60.7968 9.59615 61.4531 10.636 61.9219 11.8887C62.3906 13.1329 62.625 14.5905 62.625 16.2607V17.7568H49.2529V17.7695C49.2529 18.7411 49.4321 19.5807 49.79 20.2881C50.1565 20.9955 50.6721 21.5413 51.3369 21.9248C52.0016 22.3083 52.7903 22.5 53.7021 22.5C54.3072 22.5 54.8615 22.4146 55.3643 22.2441C55.8669 22.0737 56.2974 21.8183 56.6553 21.4775C57.0132 21.1367 57.2861 20.7189 57.4736 20.2246L62.5098 20.5566C62.2541 21.7668 61.7301 22.8241 60.9375 23.7275C60.1536 24.6221 59.1394 25.3205 57.8955 25.8232C56.6597 26.3176 55.2316 26.5654 53.6123 26.5654C51.5925 26.5654 49.8538 26.1561 48.3965 25.3379C46.9476 24.5112 45.831 23.3435 45.0469 21.835C44.2629 20.318 43.8711 18.524 43.8711 16.4531C43.8711 14.4333 44.2628 12.6603 45.0469 11.1348C45.831 9.6092 46.9351 8.42063 48.3584 7.56836C49.7902 6.7161 51.4694 6.29004 53.3955 6.29004ZM108.896 6.29004C109.987 6.29007 111.031 6.4172 112.028 6.67285C113.034 6.92853 113.925 7.32538 114.7 7.8623C115.484 8.39914 116.102 9.08911 116.554 9.93262C117.005 10.7678 117.231 11.7699 117.231 12.9375V26.1816H112.066V23.459H111.913C111.598 24.0725 111.176 24.6134 110.647 25.082C110.119 25.5422 109.484 25.9048 108.743 26.1689C108.002 26.4246 107.144 26.5527 106.173 26.5527C104.92 26.5527 103.803 26.335 102.823 25.9004C101.843 25.4572 101.068 24.805 100.497 23.9443C99.9346 23.075 99.6533 21.9927 99.6533 20.6973C99.6533 19.6064 99.8533 18.6897 100.254 17.9482C100.654 17.2069 101.2 16.6108 101.891 16.1592C102.581 15.7075 103.365 15.3659 104.243 15.1357C105.129 14.9057 106.058 14.7441 107.029 14.6504C108.171 14.5311 109.092 14.4206 109.791 14.3184C110.49 14.2076 110.997 14.0451 111.312 13.832C111.628 13.619 111.785 13.3033 111.785 12.8857V12.8096C111.785 12.0001 111.53 11.3738 111.019 10.9307C110.516 10.4875 109.799 10.2656 108.87 10.2656C107.89 10.2657 107.111 10.4826 106.531 10.917C105.952 11.3431 105.568 11.8806 105.381 12.5283L100.344 12.1191C100.599 10.926 101.103 9.8947 101.853 9.02539C102.602 8.14772 103.569 7.47457 104.754 7.00586C105.947 6.52859 107.328 6.29004 108.896 6.29004ZM38.1318 6.54492H41.8271V10.6357H38.1318V20.1475C38.1318 20.6501 38.209 21.042 38.3623 21.3232C38.5157 21.596 38.7292 21.7886 39.002 21.8994C39.2831 22.0101 39.6074 22.0654 39.9736 22.0654C40.2292 22.0654 40.4847 22.0436 40.7402 22.001C40.9958 21.9499 41.1918 21.9113 41.3281 21.8857L42.1846 25.9385C41.9119 26.0237 41.5284 26.1216 41.0342 26.2324C40.5399 26.3517 39.9388 26.4246 39.2314 26.4502C37.9191 26.5013 36.7688 26.3263 35.7803 25.9258C34.8002 25.5252 34.0367 24.9033 33.4912 24.0596C32.9458 23.2158 32.678 22.1501 32.6865 20.8633V10.6357H30.002V6.54492H32.6865V1.84082H38.1318V6.54492ZM20.8145 6.29004C22.178 6.29004 23.3667 6.58807 24.3809 7.18457C25.395 7.78114 26.1836 8.63333 26.7461 9.74121C27.3086 10.8406 27.5898 12.1532 27.5898 13.6787V26.1816H22.1436V14.6504C22.1521 13.4487 21.8458 12.5112 21.2236 11.8379C20.6015 11.1561 19.745 10.8155 18.6543 10.8154C17.9214 10.8154 17.2734 10.9728 16.7109 11.2881C16.157 11.6034 15.7226 12.0639 15.4072 12.6689C15.1004 13.2655 14.9421 13.9855 14.9336 14.8291V26.1816H9.4873V6.54492H14.6777V10.0098H14.9082C15.3429 8.86772 16.072 7.96458 17.0947 7.2998C18.1174 6.62659 19.3572 6.29004 20.8145 6.29004ZM75.8809 6.26367C76.1535 6.26367 76.4474 6.28136 76.7627 6.31543C77.078 6.34952 77.3551 6.39641 77.5938 6.45605V11.2881C77.3382 11.2114 76.9846 11.1436 76.5332 11.084C76.0816 11.0243 75.6679 10.9942 75.293 10.9941C74.4919 10.9941 73.7761 11.1692 73.1455 11.5186C72.5233 11.8595 72.0286 12.3366 71.6621 12.9502C71.3042 13.5638 71.125 14.2712 71.125 15.0723V26.1816H65.6787V6.54492H70.959V9.97168H71.1631C71.521 8.75299 72.1221 7.83212 72.9658 7.20996C73.8096 6.57928 74.7814 6.26367 75.8809 6.26367ZM88.7783 20.5947H88.9834L93.0488 6.54492H98.8145L91.9492 26.1816H85.8125L78.9473 6.54492H84.7002L88.7783 20.5947ZM111.823 17.0791C111.653 17.1898 111.418 17.292 111.12 17.3857C110.83 17.4709 110.502 17.5522 110.136 17.6289C109.769 17.697 109.403 17.7617 109.037 17.8213C108.671 17.8724 108.338 17.9193 108.04 17.9619C107.401 18.0557 106.842 18.2047 106.365 18.4092C105.888 18.6137 105.517 18.8908 105.253 19.2402C104.989 19.5811 104.856 20.0072 104.856 20.5186C104.857 21.2599 105.125 21.8268 105.662 22.2188C106.207 22.6021 106.898 22.7939 107.732 22.7939C108.533 22.7939 109.241 22.6364 109.854 22.3213C110.468 21.9974 110.95 21.5621 111.3 21.0166C111.649 20.4712 111.823 19.8533 111.823 19.1631V17.0791ZM53.4844 10.3545C52.6578 10.3545 51.9253 10.5472 51.2861 10.9307C50.6555 11.3056 50.1607 11.8121 49.8027 12.4512C49.4725 13.0329 49.2926 13.6768 49.2598 14.3818H57.499C57.499 13.5978 57.3282 12.9029 56.9873 12.2979C56.6464 11.6929 56.1734 11.2198 55.5684 10.8789C54.9718 10.5295 54.277 10.3545 53.4844 10.3545Z" />
+      </g>
+    </svg>
+
+    <div class="timeline" aria-hidden="true"></div>
+    <div class="controls" aria-label="Animation controls">
+      <button type="button" id="replay">Replay</button>
+      <button type="button" id="pause">Pause</button>
+    </div>
+  </main>
+
+  <script>
+    const stage = document.getElementById("stage");
+    const replay = document.getElementById("replay");
+    const pause = document.getElementById("pause");
+
+    replay.addEventListener("click", () => {
+      stage.classList.remove("paused");
+      pause.textContent = "Pause";
+      document.getAnimations().forEach((animation) => {
+        animation.cancel();
+        animation.play();
+      });
+    });
+
+    pause.addEventListener("click", () => {
+      stage.classList.toggle("paused");
+      pause.textContent = stage.classList.contains("paused") ? "Play" : "Pause";
+    });
+  </script>
+</body>
+</html>
